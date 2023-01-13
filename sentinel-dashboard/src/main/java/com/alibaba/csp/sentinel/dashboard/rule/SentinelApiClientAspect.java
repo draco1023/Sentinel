@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.stream.Collectors;
 
 /**
  * @author Draco
@@ -66,7 +67,15 @@ public class SentinelApiClientAspect {
     @Around("execution(public * com.alibaba.csp.sentinel.dashboard.client.SentinelApiClient.fetchFlowRuleOfMachine(..))")
     public Object fetchFlowRuleOfMachine(ProceedingJoinPoint joinPoint) throws Throwable {
         try {
-            return flowRuleEntityProvider.getRules((String) joinPoint.getArgs()[0]);
+            String app = (String) joinPoint.getArgs()[0];
+            String ip = (String) joinPoint.getArgs()[1];
+            Integer port = (Integer) joinPoint.getArgs()[2];
+            return flowRuleEntityProvider.getRules(app)
+                    .stream().peek(r -> {
+                        r.setApp(app);
+                        r.setIp(ip);
+                        r.setPort(port);
+                    }).collect(Collectors.toList());
         } catch (Exception e) {
             logger.error("Error when fetching flow rules", e);
             return joinPoint.proceed();
@@ -81,7 +90,15 @@ public class SentinelApiClientAspect {
     @Around("execution(public * com.alibaba.csp.sentinel.dashboard.client.SentinelApiClient.fetchDegradeRuleOfMachine(..))")
     public Object fetchDegradeRuleOfMachine(ProceedingJoinPoint joinPoint) throws Throwable {
         try {
-            return degradeRuleEntityProvider.getRules((String) joinPoint.getArgs()[0]);
+            String app = (String) joinPoint.getArgs()[0];
+            String ip = (String) joinPoint.getArgs()[1];
+            Integer port = (Integer) joinPoint.getArgs()[2];
+            return degradeRuleEntityProvider.getRules(app)
+                    .stream().peek(r -> {
+                        r.setApp(app);
+                        r.setIp(ip);
+                        r.setPort(port);
+                    }).collect(Collectors.toList());
         } catch (Exception e) {
             logger.error("Error when fetching degrade rules", e);
             return joinPoint.proceed();
@@ -98,7 +115,15 @@ public class SentinelApiClientAspect {
     public Object fetchParamFlowRulesOfMachine(ProceedingJoinPoint joinPoint) {
         return CompletableFuture.supplyAsync(() -> {
             try {
-                return paramFlowRuleEntityProvider.getRules((String) joinPoint.getArgs()[0]);
+                String app = (String) joinPoint.getArgs()[0];
+                String ip = (String) joinPoint.getArgs()[1];
+                Integer port = (Integer) joinPoint.getArgs()[2];
+                return paramFlowRuleEntityProvider.getRules(app)
+                        .stream().peek(r -> {
+                            r.setApp(app);
+                            r.setIp(ip);
+                            r.setPort(port);
+                        }).collect(Collectors.toList());
             } catch (Exception e) {
                 logger.error("Error when fetching parameter flow rules", e);
                 throw new RuntimeException(e);
@@ -123,7 +148,15 @@ public class SentinelApiClientAspect {
     public Object fetchGatewayFlowRules(ProceedingJoinPoint joinPoint) {
         return CompletableFuture.supplyAsync(() -> {
             try {
-                return gatewayFlowRuleEntityProvider.getRules((String) joinPoint.getArgs()[0]);
+                String app = (String) joinPoint.getArgs()[0];
+                String ip = (String) joinPoint.getArgs()[1];
+                Integer port = (Integer) joinPoint.getArgs()[2];
+                return gatewayFlowRuleEntityProvider.getRules(app)
+                        .stream().peek(r -> {
+                            r.setApp(app);
+                            r.setIp(ip);
+                            r.setPort(port);
+                        }).collect(Collectors.toList());
             } catch (Exception e) {
                 logger.error("Error when fetching gateway flow rules", e);
                 throw new RuntimeException(e);
@@ -146,7 +179,15 @@ public class SentinelApiClientAspect {
     @Around("execution(public * com.alibaba.csp.sentinel.dashboard.client.SentinelApiClient.fetchSystemRuleOfMachine(..))")
     public Object fetchSystemRuleOfMachine(ProceedingJoinPoint joinPoint) throws Throwable {
         try {
-            return systemRuleEntityProvider.getRules((String) joinPoint.getArgs()[0]);
+            String app = (String) joinPoint.getArgs()[0];
+            String ip = (String) joinPoint.getArgs()[1];
+            Integer port = (Integer) joinPoint.getArgs()[2];
+            return systemRuleEntityProvider.getRules(app)
+                    .stream().peek(r -> {
+                        r.setApp(app);
+                        r.setIp(ip);
+                        r.setPort(port);
+                    }).collect(Collectors.toList());
         } catch (Exception e) {
             logger.error("Error when fetching system rules", e);
             return joinPoint.proceed();
@@ -161,7 +202,15 @@ public class SentinelApiClientAspect {
     @Around("execution(public * com.alibaba.csp.sentinel.dashboard.client.SentinelApiClient.fetchAuthorityRulesOfMachine(..))")
     public Object fetchAuthorityRulesOfMachine(ProceedingJoinPoint joinPoint) throws Throwable {
         try {
-            return authorityRuleEntityProvider.getRules((String) joinPoint.getArgs()[0]);
+            String app = (String) joinPoint.getArgs()[0];
+            String ip = (String) joinPoint.getArgs()[1];
+            Integer port = (Integer) joinPoint.getArgs()[2];
+            return authorityRuleEntityProvider.getRules(app)
+                    .stream().peek(r -> {
+                        r.setApp(app);
+                        r.setIp(ip);
+                        r.setPort(port);
+                    }).collect(Collectors.toList());
         } catch (Exception e) {
             logger.error("Error when fetching authority rules", e);
             return joinPoint.proceed();
@@ -178,7 +227,15 @@ public class SentinelApiClientAspect {
     public Object fetchApis(ProceedingJoinPoint joinPoint) {
         return CompletableFuture.supplyAsync(() -> {
             try {
-                return apiDefinitionEntityProvider.getRules((String) joinPoint.getArgs()[0]);
+                String app = (String) joinPoint.getArgs()[0];
+                String ip = (String) joinPoint.getArgs()[1];
+                Integer port = (Integer) joinPoint.getArgs()[2];
+                return apiDefinitionEntityProvider.getRules(app)
+                        .stream().peek(r -> {
+                            r.setApp(app);
+                            r.setIp(ip);
+                            r.setPort(port);
+                        }).collect(Collectors.toList());
             } catch (Exception e) {
                 logger.error("Error when fetching gateway apis", e);
                 throw new RuntimeException(e);

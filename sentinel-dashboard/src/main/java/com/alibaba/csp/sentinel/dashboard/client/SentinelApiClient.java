@@ -854,7 +854,7 @@ public class SentinelApiClient {
             logger.info("Modify gateway flow rules: {}", result);
             return true;
         } catch (Exception e) {
-            logger.warn("Error when modifying gateway apis", e);
+            logger.warn("Error when modifying gateway flow rules", e);
             return false;
         }
     }
